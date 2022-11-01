@@ -11,6 +11,7 @@ import {
     Icon,
     Label,
     Divider,
+    Modal
 } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
@@ -18,12 +19,13 @@ import LikeButton from "../components/LikeButton";
 import DeleteButton from "../components/DeleteButton";
 import ButtonPopup from "../utils/Popup";
 
-function SinglePost(props) {
-    const postId = props.match.params.postId;
+function SinglePost({children,...props}) {
+    // const postId = props.match.params.postId;
+    const postId = props.postId;
     const { user } = useContext(AuthContext);
-    const commentInputRef = useRef(null);
-
+    const [open, setOpen] = useState(false)
     const [comment, setComment] = useState("");
+    const commentInputRef = useRef(null);
 
     const { data: { getPost } = {} } = useQuery(FETCH_POST_QUERY, {
         variables: {
@@ -62,16 +64,25 @@ function SinglePost(props) {
         } = getPost;
 
         postMarkup = (
+
+            <Modal
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+            open={open}
+            trigger={children}
+        >
+            <Modal.Header>Add comment on post</Modal.Header>
+            <Modal.Content>
             <Grid>
                 <Grid.Row>
-                    <Grid.Column width={2}>
+                    <Grid.Column width={3}>
                         <Image
                             src="https://react.semantic-ui.com/images/avatar/large/molly.png"
                             size="small"
                             float="right"
                         />
                     </Grid.Column>
-                    <Grid.Column width={10}>
+                    <Grid.Column width={13}>
                         <Card fluid>
                             <Card.Content>
                                 <Card.Header>{username}</Card.Header>
@@ -170,6 +181,21 @@ function SinglePost(props) {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button color='black' onClick={() => setOpen(false)}>
+                    Close
+                </Button>
+                {/* <Button
+                    content="Yep, that's me"
+                    labelPosition='right'
+                    icon='checkmark'
+                    onClick={() => setOpen(false)}
+                    positive
+                /> */}
+            </Modal.Actions>
+        </Modal>
+  
         );
     }
     return postMarkup;

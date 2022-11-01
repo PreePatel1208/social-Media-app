@@ -83,7 +83,6 @@ module.exports = {
             });
 
             const result = await newUser.save();
-console.log("result",result);
             const token = generateToken(result);
             console.log("token",token);
 
@@ -93,5 +92,6 @@ console.log("result",result);
                 token,
             };
         },
+        
     },
 };

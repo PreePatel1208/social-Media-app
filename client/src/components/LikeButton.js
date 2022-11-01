@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import { Button, Label, Icon } from "semantic-ui-react";
 
 import ButtonPopup from "../utils/Popup";
+import LikedUser from "./LikedUser";
 
 function LikeButton({ user, post: { id, likeCount, likes } }) {
     const [liked, setLiked] = useState(false);
@@ -39,9 +40,11 @@ function LikeButton({ user, post: { id, likeCount, likes } }) {
         <ButtonPopup content="Like post">
             <Button as="div" labelPosition="right" onClick={likePost}>
                 {likeButton}
+                <LikedUser {...{likes}}>
                 <Label basic color="pink" pointing="left">
                     {likeCount}
                 </Label>
+                </LikedUser>
             </Button>
         </ButtonPopup>
     );
